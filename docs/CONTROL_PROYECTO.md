@@ -12,16 +12,18 @@ SmartRisk integra aportes de ocho módulos con análisis humano y revisión espe
 
 | Orden | Trabajo | Registro | Estado inicial |
 |---|---|---|---|
-| 1 | Inventario de herramientas de ocho módulos | [#1](../../issues/1) | Pendiente |
-| 2 | Datos comunes y flujo hacia SmartRisk | [#2](../../issues/2) | Pendiente; depende de #1 |
-| 3 | Piloto comunitario y geomecánico | [#3](../../issues/3) | Pendiente; depende de #1 y #2 |
-| 4 | Panel interno GeoPro Control en Vue | [#4](../../issues/4) | Pendiente; puede comenzar con el modelo de control |
+| 1 | Inventario de herramientas de ocho módulos | [#1](https://github.com/dcoellom2-creator/geopro-smartrisk/issues/1) | En curso: inventario inicial y comprobaciones de lógica; verificación funcional pendiente |
+| 2 | Datos comunes y flujo hacia SmartRisk | [#2](https://github.com/dcoellom2-creator/geopro-smartrisk/issues/2) | Pendiente; depende de #1 |
+| 3 | Piloto comunitario y geomecánico | [#3](https://github.com/dcoellom2-creator/geopro-smartrisk/issues/3) | Pendiente; depende de #1 y #2 |
+| 4 | Panel interno GeoPro Control en Vue | [#4](https://github.com/dcoellom2-creator/geopro-smartrisk/issues/4) | Pendiente; puede comenzar con el modelo de control |
 
 ## Reglas de seguimiento
 
 Cada tarea registra objetivo, entregable, responsable confirmado, prioridad, fecha acordada, dependencias, evidencia y criterio de cierre. No asignar fechas o responsables sin acuerdo.
 
 Estados: pendiente → en curso → en revisión → terminado. Bloqueado incluye causa y acción necesaria. Los cambios de estado se registran en la tarea. Terminado exige evidencia y revisión; los porcentajes se calculan desde entregables aceptados, no desde tiempo transcurrido.
+
+[Inventario con evidencias y brechas](INVENTARIO_HERRAMIENTAS.md), corte 8 de noviembre de 2026. La tabla siguiente resume el modelo aprobado; el inventario distingue lo localizado, lo probado y lo pendiente.
 
 ## Registro de herramientas
 
