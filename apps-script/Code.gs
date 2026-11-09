@@ -6,7 +6,7 @@ const SMART_HEADERS = {
   Bitacora: ['fecha','tipo','id','accion','version','resumen'],
   Datos_Kobo: ['lote','parte','total','json','fecha','sha256']
 };
-function onOpen() { SpreadsheetApp.getUi().createMenu('SmartRisk').addItem('Abrir registro central','abrirRegistro').addToUi(); }
+function onOpen() { SpreadsheetApp.getUi().createMenu('SmartRisk').addItem('Abrir registro central','abrirRegistro').addSeparator().addItem('Conectar formularios Kobo','configurarKobo').addToUi(); }
 function abrirRegistro() {
   SpreadsheetApp.getUi().showModalDialog(HtmlService.createHtmlOutput(SMART_HTML).setWidth(1100).setHeight(720),'SmartRisk · Registro central');
 }
