@@ -16,7 +16,7 @@ function smartSheet_(name) {
   return s;
 }
 function smartLatest_(name) {
-  const s=smartSheet_(name), heads=SMART_HEADERS[name], map={};
+  const s=smartSheet_(name), heads=SMART_HEADERS[name], map=Object.create(null);
   if(s.getLastRow()<2)return [];
   s.getRange(2,1,s.getLastRow()-1,heads.length).getDisplayValues().forEach(row=>{
     if(!row[0])return;
@@ -94,7 +94,7 @@ body{font:15px Arial;background:#f3f7fb;color:#163044;margin:24px}h1{font-size:2
 <script>
 const $=id=>document.getElementById(id),form=$('editor');let data={informacion:[],tareas:[],lotes:[]},kind='Informacion',editing=null,busy=false,dirty=false;
 function msg(t){$('status').textContent=t}function rpc(fn,...args){return new Promise((resolve,reject)=>google.script.run.withSuccessHandler(resolve).withFailureHandler(reject)[fn](...args))}
-function lock(v){busy=v;document.querySelectorAll('button,input[type=file]').forEach(n=>n.disabled=v)}
+function lock(v){busy=v;document.querySelectorAll('button,input,select,textarea').forEach(n=>n.disabled=v)}
 function current(){return kind==='Informacion'?data.informacion:data.tareas}
 function draw(){const q=$('query').value.toLocaleLowerCase();$('results').replaceChildren();current().filter(x=>Object.values(x).join(' ').toLocaleLowerCase().includes(q)).forEach(x=>{const a=document.createElement('article'),t=document.createElement('strong'),p=document.createElement('p'),b=document.createElement('button');t.textContent=x.titulo;p.textContent=[x.modulo,x.responsable,'Versión '+x.version,x.actualizado].filter(Boolean).join(' · ');b.textContent='Consultar / editar';b.onclick=()=>{if(dirty&&!confirm('Hay cambios sin guardar. ¿Descartarlos para abrir otro registro?'))return;edit(x)};a.append(t,p,b);$('results').append(a)});$('archives').replaceChildren();data.lotes.forEach(x=>{const b=document.createElement('button');b.textContent='Descargar lote '+x.fecha;b.onclick=async()=>{try{download(await rpc('centralArchiveRead',x.id),'Kobo_'+x.id+'.json')}catch(e){msg(e.message)}};$('archives').append(b)})}
 function download(text,name){const a=document.createElement('a'),url=URL.createObjectURL(new Blob([text],{type:'application/json'}));a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
