@@ -1,0 +1,17 @@
+const assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs'),crypto=require('node:crypto');
+const tables={},sheet=name=>({getLastRow:()=>tables[name].length,getRange:(r,c,n,m)=>({getDisplayValues:()=>tables[name].slice(r-1,r-1+n).map(row=>row.slice(c-1,c-1+m).map(String)),setNumberFormat(){return this},setValues(rows){for(let i=0;i<rows.length;i++){tables[name][r-1+i]??=[];for(let j=0;j<m;j++){let x=rows[i][j];tables[name][r-1+i][c-1+j]=typeof x==='string'&&x.startsWith("'")?x.slice(1):x}}return this}})});
+const context=vm.createContext({SpreadsheetApp:{getActiveSpreadsheet:()=>({getSheetByName:name=>tables[name]?sheet(name):null}),flush(){}},LockService:{getDocumentLock:()=>({waitLock(){},releaseLock(){}})},Utilities:{getUuid:()=>crypto.randomUUID(),DigestAlgorithm:{SHA_256:'sha256'},computeDigest:(_,s)=>[...crypto.createHash('sha256').update(s).digest()].map(x=>x>127?x-256:x)}});
+vm.runInContext(fs.readFileSync(__dirname+'/Code.gs','utf8')+';Object.assign(this,{headers:SMART_HEADERS});',context);
+for(const [name,headers]of Object.entries(context.headers))tables[name]=[Array.from(headers)];
+let x=context.centralSave('Informacion',{id:'nota-1',titulo:'Acuerdo',detalle:'=IMPORTXML("no")'},0).record;
+assert.equal(x.version,1);assert.equal(context.centralList().informacion[0].detalle,'=IMPORTXML("no")');
+x=context.centralSave('Informacion',{...x,detalle:'Revisión acordada'},1).record;assert.equal(x.version,2);assert.equal(tables.Informacion.length,3);assert.equal(context.centralList().informacion.length,1);
+assert.throws(()=>context.centralSave('Informacion',x,1),/Otro guardado/);
+assert.equal(tables.Informacion.length,3);
+assert.throws(()=>context.centralSave('Tareas',{id:'t1',titulo:'Cerrar piloto',estado:'Terminado',prioridad:'Alta'},0),/responsable y evidencia/);
+context.centralSave('Tareas',{id:'t1',titulo:'Cerrar piloto',estado:'Terminado',prioridad:'Alta',responsable:'Equipo',evidencia:'Acta'},0);
+const text=JSON.stringify({records:[{id:'a',detalle:'x'.repeat(65000)}]});const archive=context.centralArchive(text);assert.equal(context.centralArchiveRead(archive.id),text);assert.equal(context.centralArchive(text).duplicate,true);assert.equal(context.centralList().lotes.length,1);
+tables.Datos_Kobo[2][3]+='corrupto';assert.throws(()=>context.centralArchiveRead(archive.id),/integridad/);
+assert.throws(()=>context.centralArchive(JSON.stringify({results:[],next:'page2'})),/incompleto/);
+tables.Informacion[0][1]='cambiado';assert.throws(()=>context.centralSave('Informacion',x,2),/estructura/);
+console.log('8 escenarios verificados: versiones, conflicto, cierre, texto literal, fragmentos, duplicados, integridad y estructura.');
