@@ -1,0 +1,17 @@
+const vm=require('node:vm'),fs=require('node:fs'),assert=require('node:assert/strict');
+let pages=[],requests=[],property={},triggers=[],syncResult=[{ok:true}];
+const context=vm.createContext({UrlFetchApp:{fetch(url,options){requests.push({url,options});const p=pages.shift();if(!p)throw Error('Sin fixture');return {getResponseCode:()=>p.status||200,getContentText:()=>JSON.stringify(p.body)}}},PropertiesService:{getUserProperties:()=>({setProperty:(k,v)=>property[k]=v,getProperty:k=>property[k]})},ScriptApp:{getProjectTriggers:()=>triggers,newTrigger:name=>({timeBased(){return this},everyHours(n){assert.equal(n,1);return this},create(){triggers.push({getHandlerFunction:()=>name})}})}});
+vm.runInContext(fs.readFileSync(__dirname+'/KoboSync.gs','utf8'),context);
+const uid='axouQbKCtMo3YAPMVoKkyh',root='https://kf.kobotoolbox.org/api/v2/assets/'+uid+'/data/';
+pages=[{body:{count:2,results:[{_uuid:'b',x:[1,2]}],next:root+'?page=2'}},{body:{count:2,results:[{_uuid:'a'}],next:null}}];
+let r=context.koboReadAll_({uid,name:'Comunitario'},'test-key');assert.equal(r.records.length,2);assert.equal(r.records[0]._uuid,'a');assert.equal(requests[0].options.followRedirects,false);assert.equal(requests[0].options.headers.Authorization,'Token test-key');
+pages=[{body:{count:1,results:[{_uuid:'a'}],next:'https://evil.invalid/'}}];assert.throws(()=>context.koboReadAll_({uid},'test-key'),/fuera/);assert.equal(pages.length,0);
+pages=[{body:{count:2,results:[{_uuid:'a'}],next:null}}];assert.throws(()=>context.koboReadAll_({uid},'test-key'),/incompleto/);
+pages=[{body:{count:2,results:[{_uuid:'a'},{_uuid:'a'}],next:null}}];assert.throws(()=>context.koboReadAll_({uid},'test-key'),/repetido/);
+pages=[{status:403}];assert.throws(()=>context.koboReadAll_({uid},'test-key'),/Acceso Kobo rechazado/);
+assert.equal(context.koboCanonical_({b:2,a:1}),context.koboCanonical_({a:1,b:2}));
+context.sincronizarKoboProgramado=()=>syncResult;context.koboStatus=()=>({active:true});
+pages=[{body:{}},{body:{}}];context.guardarConexionKobo('x'.repeat(40));assert.equal(triggers.length,1);
+pages=[{body:{}},{body:{}}];context.guardarConexionKobo('x'.repeat(40));assert.equal(triggers.length,1);
+triggers=[];syncResult=[{ok:false,form:'Comunitario',detail:'Error de prueba'}];pages=[{body:{}},{body:{}}];assert.throws(()=>context.guardarConexionKobo('x'.repeat(40)),/primera sincronización/);assert.equal(triggers.length,0);
+console.log('9 comprobaciones Kobo: paginación, orden, bloqueo de destinos, lotes completos, IDs, acceso, huella estable, horario único y activación condicionada.');
