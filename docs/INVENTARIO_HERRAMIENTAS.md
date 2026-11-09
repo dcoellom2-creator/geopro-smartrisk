@@ -65,3 +65,9 @@ Tarea #1 permanece abierta: inventario inicial documentado; falta verificación 
 - herramienta_campo_geomecanica_rmr_smr_kobo.xlsx, 23-06-2026: lectura parcial de control, ubicación y geometría; no certifica versión vigente ni fórmulas.
 - Comparación documental de formulario geomecánico, 29-10-2026: evidencia de revisiones posteriores y pruebas locales, sin prueba de envío Kobo. No se reproduce el caso privado.
 - README Promter Risk y documento V17.2: documentación inspeccionada; afirmaciones de pruebas históricas no se cuentan como pruebas nuevas.
+
+## Actualización de conexión · 8 noviembre 2026
+
+Sesión Kobo del propietario revisada: comunitario `axouQbKCtMo3YAPMVoKkyh`, v1 (204 preguntas); geológico/geotécnico `a8LkrUBpB7KjDCu6NzDkNt`, v6 (295 preguntas). Ambos implementados y con un envío. Se inspeccionaron los campos de sus respuestas JSON con sesión autorizada, sin recuperar credenciales. Esto resuelve la identificación de la versión geotécnica desplegada; no certifica la equivalencia con archivos anteriores.
+
+Implementado receptor por lotes JSON: [documentación de conexión](CONEXION_KOBO.md). Conserva origen, UUID, códigos territoriales y grupos repetibles, distingue duplicados y mantiene recepción como reportado. Sin sincronización automática ni base central. La afirmación anterior de ausencia de integración debe leerse ahora como ausencia de integración automática: ya existe una vía de recepción por lotes, pendiente de completar ensayo publicado.
