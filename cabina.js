@@ -44,6 +44,27 @@ const CONVERSATORIO_ACTIONS = [
     "Ingreso de cada panelista comprobado durante el ensayo."
   ],
   [
+    "comunicados-formulario",
+    "Configurar inscripción y materiales por jornada",
+    "Transversal",
+    "Preparar Google Form y una hoja privada por evento. Registrar jornada elegida, correo, canal alterno y versiones de Zoom y materiales. Probar permisos desde una cuenta invitada.",
+    "Inscripción de prueba para cada jornada y comprobación de todos los enlaces."
+  ],
+  [
+    "comunicados-automatizacion",
+    "Ensayar confirmaciones y recordatorios automáticos",
+    "Transversal",
+    "Configurar Apps Script en una copia de prueba. Enviar al inscribirse y recordar 24 horas y una hora antes según la jornada. Registrar hora, canal y resultado. Controlar duplicados por inscripción, jornada y tipo de mensaje.",
+    "Pruebas de jornada individual, ambas jornadas, inscripción tardía y reintento sin duplicados."
+  ],
+  [
+    "comunicados-corte",
+    "Conciliar envíos y resolver incidencias",
+    "Transversal",
+    "Asignar titular y suplente. Una hora antes comparar inscritos con envíos registrados, resolver pendientes o rebotes y usar WhatsApp individual como respaldo. Archivar reporte Zoom si existe.",
+    "Corte fechado con inscritos, envíos, pendientes e incidencias y evidencia de cierre."
+  ],
+  [
     "zoom",
     "Verificar distribución del enlace Zoom",
     "Transversal",
@@ -97,6 +118,22 @@ createApp({data(){return {tab:'resumen',notice:'',storageOk:true,search:'',filte
 <li><strong>Salida audiovisual.</strong> El video no salió al aire durante la explicación. Comprobar imagen y audio en Zoom desde otro dispositivo y preparar una fuente de respaldo.</li>
 <li><strong>Acceso de panelistas.</strong> Un panelista no utilizó su enlace y la vista web PROGRAM se compartió por Zoom. Ensayar el recorrido completo y acordar cómo usar Zoom como respaldo.</li>
 <li><strong>Convocatoria.</strong> Hubo dificultades en la distribución del acceso a Zoom. Conciliar inscritos, envíos, rebotes y asistencia antes de evaluar el alcance.</li></ul>
+</section>
+<section class="panel" style="margin-top:22px" aria-labelledby="comunicados">
+<h2 id="comunicados">Metodología · Comunicados y accesos</h2>
+<p><strong>Incidente del 11 y 12 de noviembre.</strong> Google Form registró 76 respuestas y 74 nombres distintos, sin elección por jornada. El jueves se observaron 13 recordatorios sin enlace y envíos con Zoom entre 3 y 19 minutos antes de iniciar. La lista de inscritos no permitía comprobar quién tenía el acceso a tiempo.</p>
+<p>Las capturas muestran 19 y 9 conexiones simultáneas, con 15 y 6 asistentes visibles al descontar al equipo. Son dos observaciones puntuales y no permiten atribuir la diferencia al envío tardío. KoboToolbox fue la práctica de diseño de formularios.</p>
+<h3>Flujo de decisiones</h3>
+<ol>
+<li><strong>Preparación → ¿Enlaces probados?</strong> Si faltan Zoom o materiales, corregir permisos y probar como invitado. Con ambos listos, abrir Google Form con selección de jornada.</li>
+<li><strong>Inscripción → Confirmación.</strong> Enviar automáticamente fecha y hora de Ecuador, Zoom y materiales para cada jornada elegida. Repetir los enlaces 24 horas y una hora antes. Las inscripciones tardías reciben confirmación inmediata.</li>
+<li><strong>Corte a una hora → ¿Hay pendientes o rebotes?</strong> El responsable revisa la hoja privada. Si hay incidencias, corrige o contacta por WhatsApp individual y registra el resultado. Si todos tienen envío registrado, marca el control como verificado.</li>
+<li><strong>Cierre → ¿Hay reporte de Zoom?</strong> Si está disponible, guardar ingresos únicos por jornada. Si solo hay capturas, anotar la hora y las conexiones visibles. Registrar la lección, la acción correctiva y su evidencia.</li>
+</ol>
+<h3>Señales de seguimiento</h3>
+<ul><li><strong>Rojo · Incidencia.</strong> Enlace inválido, envío fallido o rebote sin resolver.</li><li><strong>Ámbar · Pendiente.</strong> Prueba, asignación o cotejo de envíos por completar.</li><li><strong>Verde · Verificado.</strong> Control realizado con responsable, fecha y evidencia. Envío registrado y entrega confirmada son estados distintos.</li></ul>
+<p><strong>Bitácora privada.</strong> Una fila por inscripción y jornada, con hora, canal y resultado de cada envío, responsable, incidencia y solución. Mantener allí los datos de contacto y las evidencias con datos personales.</p>
+<p><strong>Estado de implantación.</strong> Metodología incorporada. La conexión de Google Form, Apps Script y el ensayo de correos se gestionan como acciones pendientes del próximo evento.</p>
 </section>
 <section class="panel" style="margin-top:22px"><h2>Acciones de seguimiento</h2>
 <div class="row" v-for="[id, title, module, notes, evidence] in conversatorioActions" :key="id"><div><p>{{title}}</p><small>Comprobación de cierre · {{evidence}}</small></div></div>
